@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>json-to-csv</title>
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+		<style>
+			.txtarea{
+				max-width:100%;
+				min-height:200px;
+				display:block;
+				width:100%;
+			}
+			.mydiv{
+				padding:10px;
+			}
+			.gen_btn{
+				padding:5px;
+				background-color:#743ED9;
+				color:white;
+				font-family:arial;
+				font-size:13px;
+				border:2px solid black;
+			}
+			.gen_btn:hover{
+				background-color:#9a64ff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class='mydiv'>
+			<textarea id="txt" class='txtarea'>[{"Vehicle":"BMW","Date":"30, Jul 2013 09:24 AM","Location":"Hauz Khas, Enclave, New Delhi, Delhi, India","Speed":42},{"Vehicle":"Honda CBR","Date":"30, Jul 2013 12:00 AM","Location":"Military Road,  West Bengal 734013,  India","Speed":0},{"Vehicle":"Supra","Date":"30, Jul 2013 07:53 AM","Location":"Sec-45, St. Angel's School, Gurgaon, Haryana, India","Speed":58},{"Vehicle":"Land Cruiser","Date":"30, Jul 2013 09:35 AM","Location":"DLF Phase I, Marble Market, Gurgaon, Haryana, India","Speed":83},{"Vehicle":"Suzuki Swift","Date":"30, Jul 2013 12:02 AM","Location":"Behind Central Bank RO, Ram Krishna Rd by-lane, Siliguri, West Bengal, India","Speed":0},{"Vehicle":"Honda Civic","Date":"30, Jul 2013 12:00 AM","Location":"Behind Central Bank RO, Ram Krishna Rd by-lane, Siliguri, West Bengal, India","Speed":0},{"Vehicle":"Honda Accord","Date":"30, Jul 2013 11:05 AM","Location":"DLF Phase IV, Super Mart 1, Gurgaon, Haryana, India","Speed":71}]</textarea>
+			<button class='gen_btn'>Generate File</button>
+		</div>
+	</body>
+</html>
+<script>
+$(document).ready(function() {
+    $('button').click(function() {
+        var data = $('#txt').val();
+        if (data == '')
+            return;
+
+        JSONToCSVConvertor(data, "Vehicle Report", true);
+    });
+});
+function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    var CSV = '';
+    CSV += ReportTitle + '\r\n\n';
+    if (ShowLabel) {
+        var row = "";
+        for (var index in arrData[0]) {
+            row += index + ',';
+        }
+        row = row.slice(0, -1);
+        CSV += row + '\r\n';
+    }
+    for (var i = 0; i < arrData.length; i++) {
+        var row = "";
+        for (var index in arrData[i]) {
+            row += '"' + arrData[i][index] + '",';
+        }
+        row.slice(0, row.length - 1);
+        CSV += row + '\r\n';
+    }
+    if (CSV == '') {
+        alert("Invalid data");
+        return;
+    }
+    var fileName = "MyReport_";
+    fileName += ReportTitle.replace(/ /g, "_");
+    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+    his trick will generate a temp < a / > tag
+    var link = document.createElement("a");
+    link.href = uri;
+    link.style = "visibility:hidden";
+    link.download = fileName + ".csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+} 
+</script>
