@@ -55,6 +55,7 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
         }
         row = row.slice(0, -1);
         CSV += row + '\r\n';
+        console.log(CSV);
     }
     for (var i = 0; i < arrData.length; i++) {
         var row = "";
@@ -63,6 +64,7 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
         }
         row.slice(0, row.length - 1);
         CSV += row + '\r\n';
+        console.log(CSV);
     }
     if (CSV == '') {
         alert("Invalid data");
@@ -71,7 +73,7 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
     var fileName = "MyReport_";
     fileName += ReportTitle.replace(/ /g, "_");
     var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-    his trick will generate a temp < a / > tag
+ 
     var link = document.createElement("a");
     link.href = uri;
     link.style = "visibility:hidden";
